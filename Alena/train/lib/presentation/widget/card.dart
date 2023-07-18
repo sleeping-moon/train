@@ -1,42 +1,45 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import '../../../domain/essence/person_entity.dart';
-
+import '../../../domain/entity/person_entity.dart';
+import '../util/standard_colors.dart';
 
 class PersonCard extends StatelessWidget {
-
   final Person person;
-  final _font =  GetIt.instance<SharedPreferences>().getInt('font');
+  final int font ;
+  final StandardColors color ;
 
-  PersonCard({
+  const PersonCard({
     super.key,
-    required this.person
+    required this.person,
+    required this.color,
+    required this.font,
   });
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      //width: 100,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SizedBox(
-            width: 160,
-            child: Image.network(
-              person.image,
-              fit: BoxFit.fill,
-              //scale: 3,
-            ),
+    final mediaQuery = MediaQuery.of(context);
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SizedBox(
+          height: mediaQuery.size.height / 5.5,
+          child: Image.network(
+            person.image,
+            fit: BoxFit.fill,
+            scale: 3,
           ),
-          Text(
+        ),
+        Center(
+          child: Text(
             person.name,
-            style:  TextStyle(
-              fontSize: 14 - _font!.toDouble(),
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 14 + font.toDouble(),
+              color: color.title2Color,
             ),
+            maxLines: 2,
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

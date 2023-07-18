@@ -1,32 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:train/presentation/util/standard_colors.dart';
 
-import '../../../domain/essence/person_entity.dart';
-
+import '../../../domain/entity/person_entity.dart';
+import '../../domain/repository/shared_preferences_repository.dart';
 
 class CardForHistory extends StatelessWidget {
   final Person person;
 
-  final getIt = GetIt.instance<StandardColors>();//todo
-
-  final _font =  GetIt.instance<SharedPreferences>().getInt('font');
+  final StandardColors color;
+  final int font;
 
   CardForHistory({
     super.key,
     required this.person,
+    required this.font,
+    required this.color,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: getIt.background,
+        color: color.background,
         //borderRadius: BorderRadius.circular(20.0),
         boxShadow: [
           BoxShadow(
-            color: getIt.shadowColor,
+            color: color.shadowColor,
             blurRadius: 3,
           ),
         ],
@@ -36,38 +36,53 @@ class CardForHistory extends StatelessWidget {
         vertical: 10,
       ),
       child: Row(
-        //mainAxisAlignment: MainAxisAlignment.left,
+        //mainAxisAlignment: MainAxisAlignment.,
+        //mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Image.network(
-            person.image,
-            scale: 3,
+          SizedBox(
+            width: 100,
+            height: 100,
+            child: Image.network(
+              person.image,
+              scale: 3,
+            ),
           ),
           const SizedBox(
             width: 10,
           ),
-          Column(
-            children: [
-              Align(
-                child: Text(
-                  person.name,
-                  style:  TextStyle(
-                    color: const Color.fromRGBO(157, 116, 177, 10),
-                    fontSize: 18 -_font!.toDouble(),
+          SizedBox(
+            width: 261.1,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    person.name,
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      color: color.title2Color,
+                      fontSize: 18 + font.toDouble(),
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
-              ),
-              const SizedBox(
-                width: 20,
-              ),
-              Align(
-                child: Text(
-                  person.status,
-                  style: const TextStyle(
-                    fontSize: 14,
+                const SizedBox(
+                  width: 20,
+                ),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    person.status,
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      fontSize: 14 + font.toDouble(),
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),

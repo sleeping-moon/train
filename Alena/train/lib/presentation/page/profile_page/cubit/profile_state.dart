@@ -4,22 +4,36 @@ part of 'profile_cubit.dart';
 abstract class ProfileState {}
 
 class ProfileInitial extends ProfileState {
-  late Person person;
+  final Person person;
+  final bool isFavourite;
+  final bool isFetched;
+  final List<Episode> episode;
 
   ProfileInitial({
     required this.person,
+    required this.isFavourite,
+    required this.isFetched,
+    required this.episode,
   });
 
   ProfileInitial copyWith({
    Person? person,
+    bool? isFavourite,
+    bool? isFetched,
+    List<Episode>? episode,
   }) =>
       ProfileInitial(
         person: person ?? this.person,
+        isFavourite: isFavourite ?? this.isFavourite,
+        isFetched: isFetched ?? this.isFetched,
+        episode:  episode ?? this.episode,
       );
 
-  factory ProfileInitial.init(Person thisperson) =>
-
+  factory ProfileInitial.init(Person thisPerson) =>
       ProfileInitial(
-        person:  thisperson,
+        isFavourite: false,
+        isFetched: true,
+        person:  thisPerson,
+        episode: const [],
       );
 }

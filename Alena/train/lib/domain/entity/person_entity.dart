@@ -42,6 +42,6 @@ class Person extends Equatable {
         image,
         location,
         created,
-        episode
+        episode,
       ];
 }

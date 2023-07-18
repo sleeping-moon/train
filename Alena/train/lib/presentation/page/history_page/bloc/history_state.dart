@@ -8,15 +8,20 @@ abstract class HistoryState {
 class HistoryInitial extends HistoryState {
   late List<Person> items;
   late List<Person> show;
+  late bool isFetched;
+  final StandardColors color = GetIt.instance<SharedPreferencesRepository>().getTheme();
+  final int font = GetIt.instance<SharedPreferencesRepository>().getFont();
 
   HistoryInitial.initstate() {
     items = [];
     show = [];
+    isFetched = false;
   }
 
   HistoryInitial({
     required this.items,
     required this.show,
+    required this.isFetched,
   });
 
   HistoryInitial.newShow(this.items, this.show);
@@ -24,25 +29,17 @@ class HistoryInitial extends HistoryState {
   HistoryInitial copyWith({
     List<Person>? items,
     List<Person>? show,
+    bool? isFetched,
   }) =>
       HistoryInitial(
         items: items ?? this.items,
         show: show ?? this.show,
+        isFetched: isFetched?? this.isFetched,
       );
 
   factory HistoryInitial.init() => HistoryInitial(
-        items: [],
-        show: [],
+        items: const [],
+        show: const [],
+        isFetched: false,
       );
-
-  /*void _findByName(String searchText) {
-    print('findByName start');
-    List<Dog> newshow = <Dog>[];
-    for (int i = 0; i < items.length; i++) {
-      if (items[i].dogName.startsWith(searchText)) {
-        newshow.add(items[i]);
-      }
-    }
-    show = newshow;
-  }*/
 }

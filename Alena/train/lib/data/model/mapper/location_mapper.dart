@@ -1,13 +1,13 @@
 import '../../../domain/entity/location_entity.dart';
 import '../location_dto/location_dto.dart';
 
-class LocationShell {
+class LocationMapper{
   static List<Location> toLocations(List<LocationDTO> locationModelList) {
     List<Location> newLocationModelList = [];
     for (int i = 0; i < locationModelList.length; i++) {
       newLocationModelList.add(
         Location(
-          Name: locationModelList[i].name,
+          name: locationModelList[i].name,
           url: locationModelList[i].url,
         ),
       );
@@ -17,7 +17,7 @@ class LocationShell {
 
   static Location toLocation(LocationDTO location) {
     return Location(
-      Name: location.name,
+      name: location.name,
       url: location.url,
     );
   }

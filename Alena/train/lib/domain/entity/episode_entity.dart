@@ -1,11 +1,11 @@
 class Episode {
-  final String Name;
-  final String OrderOfTheEpisode;
-  final String Pass;
+  final String name;
+  final String orderOfTheEpisode;
+  final String pass;
 
   const Episode({
-    required this.Name,
-    required this.OrderOfTheEpisode,
-    required this.Pass,
+    required this.name,
+    required this.orderOfTheEpisode,
+    required this.pass,
   });
 }

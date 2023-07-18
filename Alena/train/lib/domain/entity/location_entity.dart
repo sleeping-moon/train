@@ -1,9 +1,9 @@
 class Location {
-  final String Name;
+  final String name;
   final String url;
 
   const Location({
-    required this.Name,
+    required this.name,
     required this.url,
   });
 }

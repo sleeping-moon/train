@@ -1,27 +1,32 @@
-import 'package:flutter/material.dart';
-import '../page/home_page.dart';
-import 'package:flutter/animation.dart';
 
 class StandardText {
-  static String favorite = 'Favorite';
-  static String history = 'History';
-  static String home = 'Home';
-  static String setting = 'Setting';
+  static const String favorite = 'Favorite';
+  static const String history = 'History';
+  static const String home = 'Home';
+  static const String setting = 'Setting';
+  static const String deleteHistory  = 'Delete History';
+  static const String deleteHistoryText  = 'Delete all history';
 
-  static String dogName = 'Marcel';
-  static String dogBreed = 'Akita-Inu';
-  static String dogYears = '6';
-  static String years = ' years';
-  static String height = 'Height: ';
-  static String dogHeight = '72 cm';
-  static String weight = 'Weight: ';
-  static String dogWeight = '42 kg';
-  static String care = 'Care: ';
-  static String dogCare =
-      "Taking care of an Akita Inu doesn't require much effort. It can be kept both in the apartment and outside. You should not bathe the dog often, one or two times a year is usually enough. It is recommended to comb out the hair a couple of times a week to reduce the amount of it in the house. The most important thing for this dog is daily walks.";
+  static const String font = 'Font';
+  static const String fontDefault = 'Default';
+  static const String theme = 'Theme of the app';
+  static const String game = 'Game';
+  static const String tapGame = 'tap it a few times';
+  static const String themeLight = 'Light';
+  static const String themeDark = 'Dark';
+  static const String fontSmall = 'Small';
+  static const String fontHuge = 'Huge';
 
-  static String font = 'Font';
-  static String fontDefault = 'Default';
-  static String theme = 'Theme of the app';
-  static String themeLight = 'Light';
+  static const String close = 'Close';
+  static const String search = 'Search..';
+
+  static const String gender ='Gender:';
+  static const String species ='Species: ';
+  static const String location ='Location: ';
+  static const String origin ='Origin: ';
+  static const String type ='Type: ';
+  static const String created ='Created: ';
+  static const String toFavourite ='to favourite';
+  static const String fromFavourite ='from favourite';
+  static const String episodes ='Episodes: ';
 }

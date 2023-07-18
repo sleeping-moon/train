@@ -3,15 +3,15 @@ import '../../../domain/entity/person_entity.dart';
 import '../episode_dto/episode_dto.dart';
 import '../episode_hive/episode.dart';
 
-class EpisodeShell {//todo
+class EpisodeMapper  {
   static List<Episode> toEpisodes(List<EpisodeDTO> episodeModelList, List<String> pass) {
     List<Episode> newEpisodeModelList = [];
     for (int i = 0; i < episodeModelList.length; i++) {
       newEpisodeModelList.add(
         Episode(
-          Name: episodeModelList[i].name,
-          OrderOfTheEpisode: episodeModelList[i].episode,
-          Pass: pass[i],
+          name: episodeModelList[i].name,
+          orderOfTheEpisode: episodeModelList[i].episode,
+          pass: pass[i],
         ),
       );
     }
@@ -32,9 +32,9 @@ class EpisodeShell {//todo
     for (int i = 0; i < episode.length; i++) {
       newEpisodeList.add( EpisodeHive(
         id: person.id,
-        name: episode[i].Name,
-        episode: episode[i].OrderOfTheEpisode,
-        pass: episode[i].Pass,
+        name: episode[i].name,
+        episode: episode[i].orderOfTheEpisode,
+        pass: episode[i].pass,
       ));
     }
     return newEpisodeList;
@@ -44,9 +44,9 @@ class EpisodeShell {//todo
     List<Episode> newEpisodeList = [];
     for (int i = 0; i < episodeHive.length; i++){
       newEpisodeList.add( Episode(
-        Name: episodeHive[i].name,
-        OrderOfTheEpisode: episodeHive[i].episode,
-        Pass: episodeHive[i].pass,
+        name: episodeHive[i].name,
+        orderOfTheEpisode: episodeHive[i].episode,
+        pass: episodeHive[i].pass,
       ));
     }
     return newEpisodeList;

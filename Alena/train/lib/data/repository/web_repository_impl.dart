@@ -2,21 +2,20 @@ import 'dart:convert';
 
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
-import 'package:train/domain/essence/episode_entity.dart';
+import 'package:train/domain/entity/episode_entity.dart';
 
-import '../../domain/essence/person_entity.dart';
-import '../../domain/repository/person_repository.dart';
+import '../../domain/entity/person_entity.dart';
+import '../../domain/repository/web_repository.dart';
 import '../../presentation/util/standard_url.dart';
 import '../api_service/api_service.dart';
 import '../model/episode_dto/episode_dto.dart';
 import '../model/person_dto/person_dto.dart';
-import '../model/wrapper/episode_wrapper.dart';
-import '../model/wrapper/person_wrapper.dart';
+import '../model/mapper/episode_mapper.dart';
+import '../model/mapper/person_mapper.dart';
 
-class PersonRepositoryImplHTTP implements PersonRepository {
-  final StandardUrl _standardUrl = GetIt.instance<StandardUrl>();
+class WebRepositoryImplHTTP implements WebRepository {
 
-  PersonRepositoryImplHTTP();
+  WebRepositoryImplHTTP();
 
   @override
   Future<List<Person>> getAllPerson(int page) async {
@@ -27,7 +26,7 @@ class PersonRepositoryImplHTTP implements PersonRepository {
     List<PersonDTO> newList = (persons['results'] as List)
         .map((person) => PersonDTO.fromJson(person))
         .toList();
-    return PersonShell.toPersons(newList);
+    return PersonMapper.toPersons(newList);
   }
 
   @override
@@ -39,7 +38,7 @@ class PersonRepositoryImplHTTP implements PersonRepository {
     List<PersonDTO> newList = (persons['results'] as List)
         .map((person) => PersonDTO.fromJson(person))
         .toList();
-    return PersonShell.toPersons(newList);
+    return PersonMapper.toPersons(newList);
   }
 
   @override
@@ -49,52 +48,49 @@ class PersonRepositoryImplHTTP implements PersonRepository {
   }
 }
 
+class WebRepositoryImplDIO implements WebRepository {
 
+  final ApiService _apiService;
 
-
-class PersonRepositoryImplDIO implements PersonRepository {
-
-  final StandardUrl _standardUrl = GetIt.instance<StandardUrl>();
+  WebRepositoryImplDIO(
+      this._apiService,
+      );
 
   @override
   Future<List<Person>> getAllPerson(int page) async {
-    ApiService apiService = GetIt.instance<ApiService>();
-    final response = await apiService.dio.get(
-      _standardUrl.apiUrlCharacter,
+    final response = await _apiService.dio.get(
+      StandardUrl.apiUrlCharacter,
       queryParameters: {
-        _standardUrl.queryParametersPage: page,
+        StandardUrl.queryParametersPage: page,
       },
     );
     final persons = response.data;
     List<PersonDTO> newList = (persons['results'] as List)
         .map((person) => PersonDTO.fromJson(person))
         .toList();
-    return PersonShell.toPersons(newList);
+    return PersonMapper.toPersons(newList);
   }
 
   @override
   Future<List<Episode>> getEpisode(Person person) async {
-    ApiService apiService = GetIt.instance<ApiService>();
-    List<EpisodeDTO> newListEpisode =[];
-    for(int i = 0; i < person.episode.length; i++){
-      print(person.episode[i]);
-       final response = await apiService.dio.get(
-         person.episode[i],
-       );
-       final episode  = response.data;
-       EpisodeDTO episodeDTO = EpisodeDTO.fromJson(episode);
-       newListEpisode.add(episodeDTO);
+    List<EpisodeDTO> newListEpisode = [];
+    for (int i = 0; i < person.episode.length; i++) {
+      final response = await _apiService.dio.get(
+        person.episode[i],
+      );
+      final episode = response.data;
+      EpisodeDTO episodeDTO = EpisodeDTO.fromJson(episode);
+      newListEpisode.add(episodeDTO);
     }
-    return EpisodeShell.toEpisodes(newListEpisode, person.episode);
+    return EpisodeMapper.toEpisodes(newListEpisode, person.episode);
   }
 
   @override
   Future<List<Person>> searchPerson(String query) async {
-    ApiService apiService = GetIt.instance<ApiService>();
-    final response = await apiService.dio.get(
-      _standardUrl.apiUrlCharacter,
+    final response = await _apiService.dio.get(
+      StandardUrl.apiUrlCharacter,
       queryParameters: {
-        _standardUrl.queryParametersName: query,
+        StandardUrl.queryParametersName: query,
       },
     );
     final persons = response.data;
@@ -102,6 +98,6 @@ class PersonRepositoryImplDIO implements PersonRepository {
         .map((person) => PersonDTO.fromJson(person))
         .toList();
 
-    return PersonShell.toPersons(newList);
+    return PersonMapper.toPersons(newList);
   }
 }

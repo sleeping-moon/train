@@ -1,7 +1,7 @@
 import 'package:hive/hive.dart';
 import 'package:train/data/model/episode_hive/episode.dart';
 
-part 'list_episode.g.dart';
+//part 'list_episode.g.dart';
 
 @HiveType(typeId: 3)
 class ListEpisodeHive {
@@ -15,5 +15,4 @@ class ListEpisodeHive {
 
   @HiveField(1)
   List<EpisodeHive> episode;
-
 }

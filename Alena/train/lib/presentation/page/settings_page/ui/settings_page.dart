@@ -1,33 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_settings_ui/flutter_settings_ui.dart';
-import 'package:get_it/get_it.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:train/presentation/util/standard_colors.dart';
-import 'package:train/presentation/util/widget/custom_app_bar.dart';
+import 'package:train/presentation/widget/custom_app_bar.dart';
 
 import '../../../util/standard_text.dart';
 import '../cubit/settings_cubit.dart';
 
-/*class SettingPage extends StatefulWidget {
-  const SettingPage({
+class SettingsPage extends StatefulWidget {
+
+   const SettingsPage({
     super.key,
-    required this.title,
   });
 
-  final String title;
-
   @override
-  State<SettingPage> createState() => _SettingPageState();
-}*/
+  State<SettingsPage> createState() => _SettingsPageState();
+}
 
-class SettingsPage extends StatelessWidget {
-  final getIt = GetIt.instance<StandardColors>();
-  final font = GetIt.instance<SharedPreferences>().getInt('font');
+class _SettingsPageState extends State<SettingsPage> {
+
+  bool flag = true;
 
   final SettingsCubit _bloc = SettingsCubit();
-
-  //final double _form = 5;
 
   @override
   Widget build(BuildContext context) {
@@ -35,58 +28,107 @@ class SettingsPage extends StatelessWidget {
       create: (context) => _bloc,
       child: BlocBuilder<SettingsCubit, SettingsInitial>(
         builder: (context, state) {
-          //_bloc.init();
-          return Scaffold(
-              appBar: CustomAppBar(),
+          return WillPopScope(
+            onWillPop: () {
+              Navigator.pop(context, flag);
+              return Future.value(false);
+            },
+            child: Scaffold(
+              backgroundColor: _bloc.color.background,
+              appBar: CustomAppBar(
+                goBack: () {},
+                isMainPage: false,
+              ),
               body: SettingsList(
                 sections: [
                   SettingsSection(
                     titlePadding: const EdgeInsets.all(20),
                     title: StandardText.setting,
                     titleTextStyle: TextStyle(
-                      fontSize: 35,
-                      color: getIt.textColor,
+                      fontSize: 35 + _bloc.font.toDouble(),
                     ),
                     tiles: [
                       SettingsTile(
                         title: StandardText.font,
-                        subtitle: StandardText.fontDefault,
+                        subtitle: _bloc.state.font,
                         leading: const Icon(Icons.font_download_outlined),
                         onPressed: (BuildContext context) {
                           showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: const Text('Font Size'),
-                                  content: Column(children: [
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                backgroundColor: _bloc.color.background,
+                                title: Text(
+                                  'Font Size',
+                                  style: TextStyle(
+                                    color: _bloc.color.textColor,
+                                    fontSize: 18 + _bloc.font.toDouble(),
+                                  ),
+                                ),
+                                content: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
                                     GestureDetector(
-                                      child: const Text('Small'),
+                                      child: Text(
+                                        StandardText.fontSmall,
+                                        style: TextStyle(
+                                          color: _bloc.color.textColor,
+                                          fontSize: 18 + _bloc.font.toDouble(),
+                                        ),
+                                      ),
                                       onTap: () {
-                                        _bloc.changeFront('Small');
+                                        flag = false;
+                                        _bloc.changeFront(StandardText.fontSmall);
+                                        Navigator.of(context).pop();
                                       },
                                     ),
                                     GestureDetector(
-                                      child: const Text('Default'),
+                                      child: Text(
+                                        StandardText.fontDefault,
+                                        style: TextStyle(
+                                          color: _bloc.color.textColor,
+                                          fontSize: 18 + _bloc.font.toDouble(),
+                                        ),
+                                      ),
                                       onTap: () {
-                                        _bloc.changeFront('Default');
+                                        flag = false;
+                                        _bloc.changeFront(StandardText.fontDefault);
+                                        Navigator.of(context).pop();
                                       },
                                     ),
                                     GestureDetector(
-                                      child: const Text('Huge'),
+                                      child: Text(
+                                        StandardText.fontHuge,
+                                        style: TextStyle(
+                                          color: _bloc.color.textColor,
+                                          fontSize: 18 + _bloc.font.toDouble(),
+                                        ),
+                                      ),
                                       onTap: () {
-                                        _bloc.changeFront('Huge');
+                                        flag = false;
+                                        _bloc.changeFront(StandardText.fontHuge);
+                                        Navigator.of(context).pop();
                                       },
                                     ),
-                                  ],),
-                                  actions: [
-                                    TextButton(
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: const Text('Close'),)
                                   ],
-                                );
-                              },);
+                                ),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text(
+                                      StandardText.close,
+                                      style: TextStyle(
+                                        color: _bloc.color.textColor,
+                                        fontSize: 18 + _bloc.font.toDouble(),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              );
+                            },
+                          );
                         },
                       ),
                       SettingsTile(
@@ -94,6 +136,7 @@ class SettingsPage extends StatelessWidget {
                         subtitle: _bloc.state.theme,
                         leading: const Icon(Icons.phone_android),
                         onPressed: (BuildContext context) {
+                          flag = false;
                           _bloc.changeTheme();
                         },
                       ),
@@ -105,10 +148,20 @@ class SettingsPage extends StatelessWidget {
                           _bloc.deleteHistory();
                         },
                       ),
+                      SettingsTile(
+                        title: StandardText.game,
+                        subtitle: StandardText.tapGame,
+                        leading: const Icon(Icons.games_outlined),
+                        onPressed: (BuildContext context) {
+                          _bloc.toGame(context);
+                        },
+                      ),
                     ],
                   ),
                 ],
-              ),);
+              ),
+            ),
+          );
         },
       ),
     );

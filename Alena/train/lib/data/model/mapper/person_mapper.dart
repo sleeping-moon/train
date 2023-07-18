@@ -2,9 +2,9 @@ import '../../../domain/entity/location_entity.dart';
 import '../../../domain/entity/person_entity.dart';
 import '../person_dto/person_dto.dart';
 import '../person_hive/person.dart';
-import 'location_wrapper.dart';
+import 'location_mapper.dart';
 
-class PersonShell {
+class PersonMapper{
   static Future<List<Person>> toPersons(List<PersonDTO> personModelList) async {
     List<Person> newPersonList = [];
     for (int i = 0; i < personModelList.length; i++) {
@@ -16,9 +16,9 @@ class PersonShell {
           species: personModelList[i].species,
           type: personModelList[i].type,
           gender: personModelList[i].gender,
-          origin: LocationShell.toLocation(personModelList[i].origin),
+          origin: LocationMapper.toLocation(personModelList[i].origin),
           image: personModelList[i].image,
-          location: LocationShell.toLocation(personModelList[i].location),
+          location: LocationMapper.toLocation(personModelList[i].location),
           created: personModelList[i].created,
           episode: personModelList[i].episode,
         ),
@@ -35,9 +35,9 @@ class PersonShell {
       species: personDTO.species,
       type: personDTO.type,
       gender: personDTO.gender,
-      origin: LocationShell.toLocation(personDTO.origin),
+      origin: LocationMapper.toLocation(personDTO.origin),
       image: personDTO.image,
-      location: LocationShell.toLocation(personDTO.location),
+      location: LocationMapper.toLocation(personDTO.location),
       created: personDTO.created,
       episode: personDTO.episode,
     );
@@ -51,10 +51,10 @@ class PersonShell {
       species: person.species,
       type: person.type,
       gender: person.gender,
-      originName: person.origin.Name,
+      originName: person.origin.name,
       originURL: person.origin.url,
       image: person.image,
-      locationName: person.location.Name,
+      locationName: person.location.name,
       locationURL: person.location.url,
       created: person.created,
       episode: person.episode,
@@ -69,10 +69,10 @@ class PersonShell {
       species: personHive.species,
       type: personHive.type,
       gender: personHive.gender,
-      origin: Location(Name: personHive.originName, url: personHive.originURL),
+      origin: Location(name: personHive.originName, url: personHive.originURL),
       image: personHive.image,
       location:
-          Location(Name: personHive.locationName, url: personHive.locationURL),
+          Location(name: personHive.locationName, url: personHive.locationURL),
       created: personHive.created,
       episode: personHive.episode,
     );
