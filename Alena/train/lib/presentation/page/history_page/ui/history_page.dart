@@ -35,108 +35,114 @@ class _HistoryPageState extends State<HistoryPage> {
       bloc: _bloc,
       builder: (context, state) => Scaffold(
         backgroundColor: _bloc.state.color.background,
-        appBar: CustomAppBar(
-          goBack: () {
-            _bloc.add(Refresh(context));
-          },
-          isMainPage: true,
-        ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                  top: 15,
-                  left: 25,
-                ),
-                child: Row(
-                  children: [
-                    Text(
-                      StandardText.history,
-                      style: TextStyle(
-                        fontSize: 30 - _bloc.font.toDouble(),
-                        color: _bloc.state.color.titleColor,
-                      ),
+        body:  CustomScrollView(
+          slivers: [
+            myAppBar(
+              _bloc.color,
+              true,
+              context,
+                  () {
+                _bloc.refresh(context);
+              },
+            ),
+            SliverFillRemaining(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      top: 15,
+                      left: 25,
                     ),
-                    Icon(
-                      Icons.library_books_outlined,
-                      color: _bloc.state.color.titleColor,
-                      size: 25,
+                    child: Row(
+                      children: [
+                        Text(
+                          StandardText.history,
+                          style: TextStyle(
+                            fontSize: 30 - _bloc.font.toDouble(),
+                            color: _bloc.state.color.titleColor,
+                          ),
+                        ),
+                        Icon(
+                          Icons.library_books_outlined,
+                          color: _bloc.state.color.titleColor,
+                          size: 25,
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 20,
-                ),
-                child: TextField(
-                  controller: _bloc.textFieldController,
-                  decoration: InputDecoration(
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        width: 3,
-                        color: _bloc.state.color.titleColor,
-                      ),
-                      borderRadius: BorderRadius.circular(50.0),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        width: 3,
-                        color: _bloc.state.color.appBarColor,
-                      ),
-                      borderRadius: BorderRadius.circular(50.0),
-                    ),
-                    hintText: StandardText.search,
                   ),
-                  onSubmitted: (text) {
-                    _bloc.add(SearchByNameEvent(text));
-                  },
-                ),
-              ),
-              !state.isFetched
-                  ? SizedBox(
-                      height: mediaQuery.size.height * 6.5 / 10,
-                      child: Center(
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                            top: 0,
-                          ),
-                          child: SpinKitSpinningLines(
-                            color: _bloc.color.titleColor,
-                          ),
-                        ),
-                      ),
-                    )
-                  : Expanded(
-                      child: RefreshIndicator(
-                        color: _bloc.state.color.titleColor,
-                        backgroundColor: _bloc.state.color.background,
-                        onRefresh: _bloc.reset,
-                        child: ListView.builder(
-                          scrollDirection: Axis.vertical,
-                          shrinkWrap: true,
-                          itemCount: state.show.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            //print(state.getLength());
-                            return GestureDetector(
-                              onTap: () {
-                                _bloc.add(TapOnTheCardEvent(context, index));
-                              },
-                              child: CardForHistory(
-                                person: state.show[index],
-                                color: _bloc.state.color,
-                                font: _bloc.state.font,
-                              ),
-                            );
-                          },
-                        ),
-                      ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 20,
                     ),
-            ],
-          ),
+                    child: TextField(
+                      controller: _bloc.textFieldController,
+                      decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            width: 3,
+                            color: _bloc.state.color.titleColor,
+                          ),
+                          borderRadius: BorderRadius.circular(50.0),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            width: 3,
+                            color: _bloc.state.color.appBarColor,
+                          ),
+                          borderRadius: BorderRadius.circular(50.0),
+                        ),
+                        hintText: StandardText.search,
+                      ),
+                      onSubmitted: (text) {
+                        _bloc.add(SearchByNameEvent(text));
+                      },
+                    ),
+                  ),
+                  !state.isFetched
+                      ? SizedBox(
+                          height: mediaQuery.size.height * 6.5 / 10,
+                          child: Center(
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                top: 0,
+                              ),
+                              child: SpinKitSpinningLines(
+                                color: _bloc.color.titleColor,
+                              ),
+                            ),
+                          ),
+                        )
+                      : Expanded(
+                        child: RefreshIndicator(
+                          color: _bloc.state.color.titleColor,
+                          backgroundColor: _bloc.state.color.background,
+                          onRefresh: _bloc.reset,
+                          child: ListView.builder(
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            itemCount: state.show.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              //print(state.getLength());
+                              return GestureDetector(
+                                onTap: () {
+                                  _bloc.add(TapOnTheCardEvent(context, index));
+                                },
+                                child: CardForHistory(
+                                  person: state.show[index],
+                                  color: _bloc.state.color,
+                                  font: _bloc.state.font,
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                ],
+              ),
+            ),
+          ],
         ),
         bottomNavigationBar: const CustomNavBar(selectedIndex: 2),
       ),

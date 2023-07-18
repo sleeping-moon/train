@@ -24,11 +24,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverAppBar(
-      pinned: false,
-      snap: false,
-      floating: false,
-      expandedHeight: 30.0,
+    return AppBar(
       iconTheme: IconThemeData(
         color: _color.titleColor,
       ),
@@ -56,9 +52,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                     var flag = await Navigator.push(
                       context,
                       PageTransition(
-                        type: PageTransitionType.topToBottomJoined,
+                        type: PageTransitionType.rightToLeft,
                         child: const SettingsPage(),
-                        childCurrent: this,
+                      //  childCurrent: this,
                         duration: Duration(milliseconds: 300),
                       ),
                     );
@@ -75,7 +71,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 }
 
-SliverAppBar myAppBar(StandardColors _color, bool isMainPage,BuildContext context, Function() goBack){
+SliverAppBar myAppBar(StandardColors _color, bool isMainPage,
+    BuildContext context, Function() goBack) {
   return SliverAppBar(
     pinned: false,
     snap: false,
@@ -99,26 +96,26 @@ SliverAppBar myAppBar(StandardColors _color, bool isMainPage,BuildContext contex
         const Spacer(),
         isMainPage
             ? IconButton(
-          padding: const EdgeInsets.only(right: 10),
-          icon: const Icon(
-            Icons.brightness_high_rounded,
-            size: 45.0,
-          ),
-          onPressed: () async {
-            var flag = await Navigator.push(
-              context,
-              PageTransition(
-                type: PageTransitionType.topToBottomJoined,
-                child: const SettingsPage(),
-                //childCurrent: this,
-                duration: Duration(milliseconds: 300),
-              ),
-            );
-            if (flag != null && !flag) {
-              goBack();
-            }
-          },
-        )
+                padding: const EdgeInsets.only(right: 10),
+                icon: const Icon(
+                  Icons.brightness_high_rounded,
+                  size: 45.0,
+                ),
+                onPressed: () async {
+                  var flag = await Navigator.push(
+                    context,
+                    PageTransition(
+                      type: PageTransitionType.rightToLeft,
+                      child: const SettingsPage(),
+                      //childCurrent: this,
+                      duration: Duration(milliseconds: 300),
+                    ),
+                  );
+                  if (flag != null && !flag) {
+                    goBack();
+                  }
+                },
+              )
             : const SizedBox(),
       ],
     ),

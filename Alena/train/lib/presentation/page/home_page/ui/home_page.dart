@@ -40,8 +40,8 @@ class _HomePageState extends State<HomePage> {
                     _bloc.refresh(context);
                   },
                 ),
-                SliverList.list(
-                  children: [
+                SliverFillRemaining(
+                  child:
                     Column(
                       //mainAxisAlignment: MainAxisAlignment.center,//SliverList.list
                       children: [
@@ -87,36 +87,35 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               )
                             : Expanded(
-                                child: RefreshIndicator(
-                                  color: _bloc.color.titleColor,
-                                  backgroundColor: _bloc.color.background,
-                                  onRefresh: _bloc.reset,
-                                  child: GridView.count(
-                                    scrollDirection: Axis.vertical,
-                                    controller: _bloc.scrollController,
-                                    shrinkWrap: true,
-                                    crossAxisCount: 2,
-                                    children: List.generate(
-                                      state.show.length,
-                                      (index) {
-                                        return GestureDetector(
-                                          onTap: () {
-                                            _bloc.tapOnTheCardEvent(context, index);
-                                          },
-                                          child: PersonCard(
-                                            person: state.show[index],
-                                            color: _bloc.color,
-                                            font: _bloc.font,
-                                          ),
-                                        );
-                                      },
-                                    ),
+                              child: RefreshIndicator(
+                                color: _bloc.color.titleColor,
+                                backgroundColor: _bloc.color.background,
+                                onRefresh: _bloc.reset,
+                                child: GridView.count(
+                                  scrollDirection: Axis.vertical,
+                                  controller: _bloc.scrollController,
+                                  shrinkWrap: true,
+                                  crossAxisCount: 2,
+                                  children: List.generate(
+                                    state.show.length,
+                                    (index) {
+                                      return GestureDetector(
+                                        onTap: () {
+                                          _bloc.tapOnTheCardEvent(context, index);
+                                        },
+                                        child: PersonCard(
+                                          person: state.show[index],
+                                          color: _bloc.color,
+                                          font: _bloc.font,
+                                        ),
+                                      );
+                                    },
                                   ),
                                 ),
                               ),
+                            ),
                       ],
                     ),
-                  ],
                 ),
               ],
             ),

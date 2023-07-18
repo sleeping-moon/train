@@ -23,110 +23,116 @@ class FavoritePage extends StatelessWidget {
           builder: (context, state) {
             return Scaffold(
               backgroundColor: _bloc.color.background,
-              appBar: CustomAppBar(
-                goBack: () {
-                  _bloc.refresh(context);
-                },
-                isMainPage: true,
-              ),
-              body: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        top: 15,
-                        left: 25,
-                      ),
-                      child: Row(
-                        children: [
-                          Text(
-                            StandardText.favorite,
-                            style: TextStyle(
-                              fontSize: 30 - _bloc.font.toDouble(),
-                              color: _bloc.color.titleColor,
-                            ),
+              body: CustomScrollView(
+                slivers: [
+                  myAppBar(
+                    _bloc.color,
+                    true,
+                    context,
+                        () {
+                      _bloc.refresh(context);
+                    },
+                  ),
+                  SliverFillRemaining(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            top: 15,
+                            left: 25,
                           ),
-                          Icon(
-                            Icons.favorite_border,
-                            color: _bloc.color.titleColor,
-                            size: 25,
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 20,
-                      ),
-                      child: TextField(
-                        controller: _bloc.textFieldController,
-                        decoration: InputDecoration(
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              width: 3,
-                              color: _bloc.color.titleColor,
-                            ),
-                            borderRadius: BorderRadius.circular(50.0),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              width: 3,
-                              color: _bloc.color.appBarColor,
-                            ),
-                            borderRadius: BorderRadius.circular(50.0),
-                          ),
-                          hintText: StandardText.search,
-                        ),
-                        onSubmitted: (text) {
-                          _bloc.findByName(text);
-                        },
-                      ),
-                    ),
-                    !state.isFetched
-                        ? SizedBox(
-                         height: mediaQuery.size.height * 6.5 / 10,
-                          child: Center(
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                  top: 0,
-                                ),
-                                child: SpinKitSpinningLines(
+                          child: Row(
+                            children: [
+                              Text(
+                                StandardText.favorite,
+                                style: TextStyle(
+                                  fontSize: 30 - _bloc.font.toDouble(),
                                   color: _bloc.color.titleColor,
                                 ),
                               ),
+                              Icon(
+                                Icons.favorite_border,
+                                color: _bloc.color.titleColor,
+                                size: 25,
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 20,
+                            vertical: 20,
+                          ),
+                          child: TextField(
+                            controller: _bloc.textFieldController,
+                            decoration: InputDecoration(
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 3,
+                                  color: _bloc.color.titleColor,
+                                ),
+                                borderRadius: BorderRadius.circular(50.0),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 3,
+                                  color: _bloc.color.appBarColor,
+                                ),
+                                borderRadius: BorderRadius.circular(50.0),
+                              ),
+                              hintText: StandardText.search,
                             ),
-                        )
-                        : Expanded(
-                            child: RefreshIndicator(
-                              color: _bloc.color.titleColor,
-                              backgroundColor: _bloc.color.background,
-                              onRefresh: _bloc.reset,
-                              child: GridView.count(
-                                scrollDirection: Axis.vertical,
-                                shrinkWrap: true,
-                                crossAxisCount: 2,
-                                children: List.generate(
-                                  state.show.length,
-                                  (index) {
-                                    return GestureDetector(
-                                      onTap: () {
-                                        _bloc.tapOnTheCardEvent(context, index);
-                                      },
-                                      child: PersonCard(
-                                        person: state.show[index],
-                                        color: _bloc.color,
-                                        font: _bloc.font,
-                                      ),
-                                    );
-                                  },
+                            onSubmitted: (text) {
+                              _bloc.findByName(text);
+                            },
+                          ),
+                        ),
+                        !state.isFetched
+                            ? SizedBox(
+                             height: mediaQuery.size.height * 6.5 / 10,
+                              child: Center(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                      top: 0,
+                                    ),
+                                    child: SpinKitSpinningLines(
+                                      color: _bloc.color.titleColor,
+                                    ),
+                                  ),
+                                ),
+                            )
+                            : Expanded(
+                              child: RefreshIndicator(
+                                color: _bloc.color.titleColor,
+                                backgroundColor: _bloc.color.background,
+                                onRefresh: _bloc.reset,
+                                child: GridView.count(
+                                  scrollDirection: Axis.vertical,
+                                  shrinkWrap: true,
+                                  crossAxisCount: 2,
+                                  children: List.generate(
+                                    state.show.length,
+                                    (index) {
+                                      return GestureDetector(
+                                        onTap: () {
+                                          _bloc.tapOnTheCardEvent(context, index);
+                                        },
+                                        child: PersonCard(
+                                          person: state.show[index],
+                                          color: _bloc.color,
+                                          font: _bloc.font,
+                                        ),
+                                      );
+                                    },
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                  ],
-                ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
               bottomNavigationBar: const CustomNavBar(selectedIndex: 1),
             );

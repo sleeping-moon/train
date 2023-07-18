@@ -19,7 +19,6 @@ class HomeCubit extends Cubit<HomeInitial> {
       GetIt.instance<SharedPreferencesRepository>().getTheme();
   final int font = GetIt.instance<SharedPreferencesRepository>().getFont();
   final scrollController = ScrollController();
-  final scroll4Controller = PageController();
   final textFieldController = TextEditingController();
   int _page = 1;
   bool _findByName = true;
